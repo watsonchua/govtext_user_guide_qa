@@ -1,0 +1,5 @@
+.streamlit/
+.ipynb_checkpoints/
+*.pyc
+docs/govtext/md/
+docs/govtext/raw_text

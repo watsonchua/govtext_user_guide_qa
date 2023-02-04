@@ -1,0 +1,626 @@
+section,subsection,content,tokens
+access,misc,"# Accessing GovText
+
+### SITE ADDRESS
+
+GovText is accessible from both the Internet and Intranet via https://www.govtext.gov.sg on a Google Chrome web browser.
+
+
+### FORGOT PASSWORD
+
+If you forgot your password, click the **Forgot password?** link to reset it.
+
+
+### ACCESS FROM INTRANET
+
+To access GovText from your SOE laptop, go to [**https://www.govtext.gov.sg**](https://www.google.com/url?q=https%3A%2F%2Fwww.govtext.gov.sg&sa=D&sntz=1&usg=AFQjCNFmUQ09hqG2ukKuQllzPjWQNmnPaw) on a Google Chrome web browser.
+
+If you are unable to access the site, it is likely that your agency has not whitelisted GovText yet. Please send us an email at [govtext@tech.gov.sg](mailto:govtext@tech.gov.sg) or [han_jing@tech.gov.sg](mailto:han_jing@tech.gov.sg) to find out more information regarding Intranet access to GovText, and how to proceed with your agency firewall application if it has not been done.
+
+
+### Data Classification and Sensitivity <a id=""h.32x8x58qe25c""></a>
+
+GovText resides in the Government Commercial Cloud \(GCC\), which **supports up to Restricted and Sensitive\(Normal\) data**. If you are accessing GovText from an Internet device, please be aware that classified data should not be transferred out of your SOE laptop, or processed over the Internet.
+",339
+access,registration,"### ACCOUNT REGISTRATION
+
+To register your account, click on the **Sign Up** button at the home page to start the registration process.
+
+Please provide your name, email address and password. Do note that your email address must be a **Public Officer’s work email address** \(e.g. those ending with .gov.sg\).
+
+A valid password must contain at least 12 characters, and be a combination of:
+
+* Upper and lower case letters
+* Digits \(0-9\)
+* Special characters \(@, !, etc.\)
+
+![](/img/Doc_Access_CreateAccount.JPG)
+
+Upon hitting **Create Account**, a verification email will be sent to your registered email address. You can find a sample email below.
+
+Once you have successfully verified your email address, you can proceed to log in and use GovText!
+
+If you don't find the email in your Inbox, try checking your Spam mail box.
+
+![](/img/Doc_Access_CreateAccount3.JPG)",200
+datasets,overview,"# Datasets
+
+GovText is designed to be dataset-centric (i.e. the same dataset can be used for multiple analyses). Thus, you will be required to upload your dataset before proceeding to create an analysis.
+
+You will find the dataset management page by clicking on the **Datasets** button in the navigation bar.
+
+### DATASETS OVERVIEW
+On the Datasets page, you can do the following:
+
+* Upload your datasets
+* Update the metadata of an existing dataset, including dataset name, data classification and sensitivity
+* View an overview of your datasets: total size of your raw datasets stored on GovText, size of individual datasets, and number of predictions done on a particular dataset
+* Search for your datasets by name
+* Delete your datasets
+* Download your datasets
+* Navigate to a particular dataset by clicking on a row displayed in the table
+
+> Overview of your datasets
+> 
+![Dataset1.JPG](/img/Dataset1.JPG) ",195
+datasets,edit,"### UPLOAD DATASET
+Clicking on the **Upload** button on the Datasets page or the home page will bring you to the dataset uploading page. 
+
+The data must be in an **excel (.xlsx / .xls)** or **CSV (.csv)** file and be in the **first worksheet** of the file.
+
+The column that you wish to analyse must be named as “**text**”. Do format your data such that each row in the worksheet represents one document (an article, email, feedback etc.)
+
+Do note that each dataset file should be **less than 20MB**, and **should not exceed 10,000 documents**. For dataset files used for summarisation, only the **first 50 documents** will be processed and summarised.
+
+You can refer to the picture below or download our sample datasets under [**Resources**](../resources/sample-datasets) for more details.
+
+![Dataset2.JPG](/img/Dataset2.JPG)
+
+### DELETE DATASET
+A dataset can only be deleted when it is not used by any prediction. 
+
+To delete a dataset that is currently used for a prediction, please delete the corresponding prediction before deleting the dataset. You can find the list of predictions using a particular dataset from the individual dataset page.
+
+### INDIVIDUAL DATASET PAGE
+On the individual dataset page, you will be able to see the list of predictions that used the selected dataset, and preview its contents.
+
+You can delete the predictions directly from this page if you wish to.
+
+> Individual dataset page
+>
+![Dataset3.JPG](/img/Dataset3.JPG) ",323
+navigation,overview,"# Navigation
+
+### HOME PAGE
+
+After you log in to GovText, you will be redirected to the home page. This page provides you with an overview of your recent activities, including:
+
+* The processing status of your most recent analysis 
+* Your storage utilisation
+* Quick access to your last 6 analyses
+
+![WelcomePage.jpg](/img/WelcomePage.jpg)
+
+From the home page, you will be able to go to the **Datasets**, **Predictions** and **Stopwords** pages through the navigation bar. The navigation bar can be collapsed by clicking the folding icon next to the GovText logo.
+
+GovText is designed to be dataset-centric (i.e. the same dataset can be used for multiple analyses). Thus, you will be required to upload your dataset before proceeding to create an analysis. 
+
+
+### DATASETS
+
+A dataset refers to the list of documents, feedback or other types of textual information that you need to analyse. The **Datasets** button in the navigation bar will bring you the page where you can upload and manage your datasets stored on GovText. Do note that we have imposed a **500MB storage limitation** for each user’s raw data, so please manage your datasets to keep within the limit.
+
+### PREDICTIONS
+
+A prediction refers to the results of an analysis. The **Predictions** button in the navigation bar will lead you to the page where you can choose your type of analysis (e.g. topic modelling or summarisation), and manage your past submitted analyses.
+
+### STOPWORDS
+
+Stopwords are words that are not useful, or may negatively impact the analysis. Most of these stopwords will be automatically removed from your data during the pre-processing stage. However, in the event where domain-specific stopwords are required, you have the option of creating custom stopword lists under the **Stopwords** button in the navigation bar. You will be able to select which custom list to use when creating your analysis.
+",396
+predictions,overview,"# Predictions
+
+To create or manage your predictions, click on the **Predictions** button on the navigation bar. 
+
+To view the results of a prediction, click on the respective row in the table. 
+
+To create a new prediction, select the type of prediction you are interested in. 
+
+You can find more details on interpreting Topic Models here.
+
+![PredictionList.JPG](/img/PredictionList2.JPG)",85
+stopwords,overview,"# Stopwords
+Stopwords are frequently used terms that do not provide additional meaning or context to a text. While GovText uses a default list of stopwords, users may choose to include their own domain-specific stopwords in their analysis. 
+
+### CREATE STOPWORD COLLECTIONS
+Click on the **Stopwords** button in the navigation bar to manage your stopword collections.
+
+Refer to the steps below to create your custom stopword collection:
+
+1. Click on the **+** button at the bottom of the screen
+
+2. Enter a name for your stopword collection
+
+3. Add some words to the collection (press **enter** key to add a word)
+
+4. Save the collection by clicking the **Save** button.
+
+The animation below demonstrates this process.
+
+![CreateStopwords](/img/Stopwords_create.gif)
+
+Instead of keying in each word individually, you can also copy a list of stopwords from a document, such as notepad or excel, and paste the list into the stopwords collection. The list of stopwords inserted in this manner will be automatically separated by spaces and new line characters.
+
+Below animation demostrates how to do it with the short cut.
+
+![CreateStopwordsShortCut](/img/stopwords_shortcut.gif)
+
+### EDIT OR DELETE STOPWORD COLLECTIONS
+
+Click the pen or the bin icon to edit or delete a stopword collection.
+
+In the edit mode, you can change the stopword collection name, and add or remove stopwords.
+
+![EditStopwords](/img/Stopwords_edit.png)",309
+summarisation,concept,"## CONCEPT
+GovText offers two summarisation options:
+
+1. **Normal**: using abstractive summarisation, the main points of a document are consolidated and paraphrased into a short paragraph which reads like a human written one  
+2. **Quick**: using extractive summarisation, the most important sentences of a document are ""lifted"" and highlighted
+
+Due to the complexity involved in performing an abstractive summarisation (normal summary), it takes up more computing resources and time. Therefore, users need to enter the maximum length (number of words) of the summary they want, and only one summary which is shorter or equal to this length will be returned.  
+
+Extractive summarisation (quick summary) is very much faster than abstractive summarisation. When this option is activated, summaries of the following lengths will be returned for each document: 
+
+1. Short (around 15% of original document length) 
+2. Medium (around 30% of original document length)
+3. Long (around 45% of original document length)
+
+The abstractive summarisation uses models pre-trained on summaries of news articles. Therefore, abstractive summarisation works best on similar articles. 
+",245
+summarisation,submit analysis,"## SUBMIT AN ANALYSIS
+Click on the **Predictions** button in the navigation bar, then select the **Summarisation** card.
+
+On the Summarisation submission page:
+
+1. Enter a name for your analysis
+2. Select a dataset from the existing dataset list 
+3. Change the configuration based on your needs
+4. Click **Submit**
+
+If the submission is successful, a message will appear to inform you of this.
+
+The animation below demonstrates this process. 
+
+![Summarisation_Config](/img/Summarisation1_Config.gif)
+
+The maximum number of predictions in the **Created** or **In Progress** statuses is capped at 3 per user. That means that until 1 of the predictions is completed, you will not be allowed to submit any more predictions. 
+
+When submitting a prediction, you will be informed of the number of predictions that are still being processed.
+![CountInProgress](/img/TopicModelling_Submit2.JPG)
+
+### Select Dataset
+On the Summarisation submission page, you can find the full list of datasets that you have already uploaded. Select the dataset that you will be using for this analysis. 
+
+You can do a search using the dataset name.
+
+![Summarisation_DataFilter](/img/Summarisation2_DataFilter.gif)
+
+Do note that **only the first 50 documents in the Excel or CSV file will be processed**. Any documents after the 51st row in the spreadsheet will be discarded for summarisation. 
+
+
+If there are multiple documents in the Excel or CSV file (1 document per row in the file), each document will be summarised individually. 
+
+If you need to upload a new dataset, click on the **Upload New Dataset** button or the **Dataset** button in the navigation bar, to reach the  Dataset Upload page. The steps to upload a dataset can be found in the [Datasets](datasets) section. 
+
+After successfully uploading your new dataset, you will need to return to the Summarisation submission page.
+
+### Summarisation Options
+As mentioned above, GovText offers two types of summarisation: 
+
+1. By default (Quick Summary not checked), abstractive summarisation will be performed. This will return paraphrased summaries of the documents' main points but the time taken is longer. For this option, you will need to select the maximum summary length.
+
+    Do note that the summaries returned might not be close to the selected maximum summary length (but they will definitely not be more than this length). This is because the model score the words in the summary and decide on the optimum length which provides the most coherent one. From our experiments, the model produces the most coherent summaries with lengths around 200 words.
+
+2. If you select the Quick Summary option, key sentences from the documents will be highlighted using extractive summarisation. There is no need to select the maximum summary length for this option.
+
+![Summarisation_Config](/img/Summarisation4_Config.JPG)",608
+summarisation,check status and results,"## CHECKING PROCESSING STATUS
+
+Click on the **Predictions** button on the navigation bar. 
+
+Under the List of Predictions table, you will see the processing status of all your submitted predictions. 
+
+To view the results of a completed prediction, click on the corresponding row. 
+
+## VIEWING THE SUMMARY RESULTS
+
+### Normal (Abstractive) Summary
+For normal summaries, the main points are paraphrased and the summaries and presented as short paragraphs in the **Summary** panel.
+
+If there are multiple documents in your dataset, use the arrows at the bottom of the page to switch between documents.
+![Summarisation_Result_Abstractive](/img/Summarisation5_Results_Abs.JPG)
+
+
+### Quick (Extractive) Summary
+If the Quick Summary option is selected, the summaries will be in point forms, and the corresponding sentences in the original document will be highlighted.
+
+Three versions of the summaries will be shown - short, medium, and long. Click on the summary length buttons above the summary panel to switch between the versions.  
+
+![Summarisation_Result_Extractive](/img/Summarisation6_Results_Ext.JPG)
+
+
+### Other Utilities
+The **Download all results** icon is for downloading the full set of results.
+
+The **Create new prediction** button is a shortcut to create a new prediction with the exact same settings as the current prediction.
+
+![Summarisation_Result_buttons](/img/Summarisation7_2buttons.gif)
+
+
+## DOWNLOAD ALL RESULTS
+Click the **Download all results** button above the Original Document panel. 
+
+The summaries of all documents in the analysed dataset will be downloaded as a zip file. Please uncompress the file to view them.
+
+
+
+The unzipped Excel file for the Normal (Abstractive) Summary results has 3 columns:
+
+* Column A: Document ID
+* Column B: Original Document
+* Column C: Summary
+
+![Summarisation_Result_DownloadAbstractive](/img/Summarisation8_DownloadAbs.JPG)
+
+The unzipped Excel file for the Quick (Extractive) Summary results has 5 columns:
+
+* Column A: Document ID
+* Column B: Original Document
+* Column C: Short Summary
+* Column D: Medium Summary
+* Column E: Long Summary
+
+![Summarisation_Result_DownloadExtractive](/img/Summarisation9_DownloadExt.JPG)",488
+topic modelling,concept,"## CONCEPT
+
+Topic modelling is a statistical, unsupervised machine learning model for discovering abstract topics which occur in a collection of documents. This is done by determining the probability of each word belonging to each topic, and the proportion of each topic in each document. In other words, each word could belong to multiple topics, and as the document is formed by multiple words, a document could cover multiple topics too. 
+",84
+topic modelling,submit analysis,"## SUBMIT AN ANALYSIS
+Click on the **Predictions** button in the navigation bar, then select the **Topic Modelling** card.
+
+On the Topic Modelling submission page:
+
+1. Enter a name for your analysis
+2. Select a dataset from the existing dataset list 
+3. Select the options based on your needs
+4. Select a stopword collection if required
+5. Click **Submit**
+
+You will be informed if the submission is successful!
+
+The animation below demonstrates the process. 
+
+![Topic_Modelling_Submit1](/img/TopicModelling_Submit1.gif)
+
+
+The maximum number of predictions in the **Created** or **In Progress** statuses is capped at 3 per user. That means that until 1 of the predictions is completed, you will not be allowed to submit any more predictions. 
+
+When submitting a prediction, you will be informed of the number of predictions that are still being processed.
+
+![Topic_Modelling_Submit2](/img/TopicModelling_Submit2.JPG)
+
+### Select Dataset
+On the Topic Modelling submission page, you can find the full list of datasets that you have already uploaded. Select the dataset that you will be using for this analysis. 
+
+You can do a search using the dataset name to shorten the list.
+
+![Topic_Modelling_Submit3](/img/TopicModelling_Submit3.gif)
+
+If you need to upload a new dataset, click on the **Upload New Dataset** button or the **Dataset** button in the navigation bar, to reach the  Dataset Upload page. The steps to upload a dataset can be found in the [**Datasets**](datasets) section. 
+
+After successfully uploading your new dataset, you will need to return to Topic Modelling submission page.
+
+### Topic Modelling Configurations
+There are two configurable options for Topic Modelling: **Infer Relationship between Topics** and **Number of Trials**.
+
+Turning on the **Infer Relationship between Topics** option will activate the model which can infer correlations between topics. However, this will take a much longer processing time. Thus, for quick processing, this option is not recommended.
+
+The **Number of Trials** option determines the number of models GovText will train to find more optimal models. The larger the number of trials, the more likely we can find more optimal models. However, it will also require a longer processing time. 
+
+![Topic_Modelling_Submit4](/img/TopicModelling_Submit4.JPG)
+
+Without the inferring relationship option, the number of trials can be an **integer between 3 and 100**. For a first try, we recommend a value between 10 to 20. 
+
+With the inferring relationship option, the number of trials can be an **integer between 3 and 20**. For a first try, we recommend a value between 5 to 10. 
+
+### Select a Stopword Collection
+Stopwords are frequently used terms that do not provide additional meaning or context to a text. While GovText uses a default list of stopwords, users may choose to include their own domain-specific stopwords in their analysis. 
+
+To include your custom stopword collection in the analysis, please select it from the table. 
+
+If you have not created your custom stopword collection yet, refer to the following steps to do so on this page: 
+
+
+1. Click on the **+** button at the bottom of the screen
+2. Enter a name for your stopword collection
+3. Add some words to the collection (press **enter** key to add a word)
+4. Save the collection by clicking the **Save** button.
+5. Select the collection before submitting the analysis
+
+The animation below demonstrates this process. 
+
+You can also copy and paste your list of stopwords into the collection instead of keying them in individually. You can find the tips [here](stopwords).
+
+![Topic_Modelling_Submit5](/img/TopicModelling_Submit5.gif)",808
+topic modelling,check status and results - overview,"## CHECKING STATUS & VIEWING RESULTS
+Click on the **Predictions** button on the navigation bar. 
+
+Under the List of Predictions table, you will see the processing status of all your submitted predictions. 
+
+To view the results of a completed prediction, click on the corresponding row. 
+
+## INTERPRETING THE RESULTS
+GovText provides users with the **top 3 topic models**, largely based on the average coherence scores of the topics in a model. This score represents the degree of semantic similarity between the top scoring words in the topics.
+
+![Topic_Modelling_Results1](/img/TopicModelling_Results1_3models.JPG)
+
+In each model, GovText provides three different perspectives of the results:
+
+1. The results overview
+2. The topic page
+3. The document page
+
+Through the visualizations, you will be able to understand the topic model from both a high-level perspective and a low-level, detailed view.
+
+![Topic_Modelling_Results2](/img/TopicModelling_results2_3levelview30.gif)
+
+
+### Result Overview
+#### _Coherence Score Plot_
+The coherence score of a topic represents the **degree of semantic similarity between its top scoring words**. You will be able to see the exact coherence score of a topic by hovering over its data point.
+
+This diagram is downloadable via the download button on the top right corner. 
+
+![Topic_Modelling_Results3](/img/TopicModelling_Results3_CoherentScore.gif)        |  ![Topic_Modelling_Results4](/img/TopicModelling_Results4_NetworkDiagram.gif)
+:-------------------------:|:-------------------------:
+Coherence Score |  Network Graph
+
+
+
+#### _Network Graph_
+If you have selected the option to infer relationships between topics, the links connecting the nodes will represent the degree of **correlation** between the 2 topics. If this option is not selected, the links would represent the degree of **similarity** between topics.  
+
+In addition, the size of the nodes represents the size of the topics.
+
+When hovering the mouse above a node, the top five words of the topic will be displayed, so that you can get a quick sense of what the topic is about. 
+
+You can zoom in and out of the network graph by scrolling the wheel on your mouse within the diagram. You can also drag the graph using your mouse.
+
+You can download the diagram as an image by clicking the download button at the top right corner.
+
+
+#### _Word Cloud_
+Each topic in the results overview is represented as a word cloud. It is formed by the top 50 words with the highest word probability within the topic, and the size of the words represent their relative importance. 
+
+You can **search for a topic** by either typing a word of interest into the search bar (followed by enter key), or clicking a word on a word cloud. The search function supports partial word and multiple word searches, and will only keep the topics with matches found from their top 50 words. 
+
+You can download a word cloud as an image by clicking the download button at the top right corner.
+
+![Topic_Modelling_Results5](/img/TopicModelling_Results5_wordcloudsearch.gif)",659
+topic modelling,check status and results - advanced,"#### _Other Utilities_
+The **Expand word clouds** icon can be used to hide the coherence score and topic similarity/correlation diagrams. This will keep only the word cloud diagrams. 
+
+Clicking on the expand word clouds button again will show the hidden diagrams. 
+
+![Topic_Modelling_Results6](/img/TopicModelling_Results6_3buttons.gif)
+
+The **Download all results** icon is for downloading the full set of results, which is explained in detail at the end of this page.
+
+The **Create new prediction** button is a shortcut to create a new prediction with the exact same settings as the current prediction.
+
+### Topic View
+Click on a word cloud in the results overview page to navigate to the topic view page. 
+
+#### _Top Words in Topic by Word Probability_ 
+The diagram on the left displays the words in the selected topic, and its corresponding word probability value. This chart is downloadable as an image by clicking the download button at top right corner. 
+
+**Word probability** is the probability of the word belonging to a topic. Each unique word in the dataset is assigned a set of probabilities of it belonging to each topic. For example, in a model with 4 topics,  a word is assigned a set of 4 probabilities. Each of the 4 values represents how likely the word belongs to each topic. Thus, it is possible for a word to appear in multiple word clouds. 
+
+#### _Ranking of Documents by Topic Constitution_ 
+On the right, you will see the full list of documents ranked by their **topic constitution scores** for the selected topic. 
+
+Each document can be represented as a distribution of topics in which the document contains. 
+
+For example, in a model with 3 topics, a document could be made up of 60% topic 1, 30% topic 2 and 10% topic 3  (adds up to 100%). In this case, when topic 1 is selected, the topic constitution score displayed will be 0.6. Thus, changing the topic selected will change the ranking of the documents in the dataset. 
+
+You can reselect a topic by:
+
+* Clicking on the **Change Topics** button 
+* Going back to the results overview page, and select another word cloud
+
+![Topic_Modelling_Results7](/img/TopicModelling_Results7_breadcrumb1.JPG)
+
+### Document View
+Click on a document in the topic page to navigate to the document view. 
+
+The Document view will show you how the topics are distributed inside the selected document. The words most relevant to the selected topic will be highlighted in the original document. You can choose to highlight the words relevant to other topics by clicking on the topic in the bar chart.
+
+You can download the bar chart by clicking the download button at the top right corner.
+
+![Topic_Modelling_Results8](/img/TopicModelling_Results8_DocumentView.gif)",599
+topic modelling,download results,"## DOWNLOAD ALL RESULTS
+In the results overview page, the download button next to the search bar will allow you to download the full results of a selected model. For example, in screenshot below, clicking on the download button will download the full results for model 3. If you want to download the results for the other models, you need to navigate to other tabs and download the results there.
+
+![Topic_Modelling_Results9](/img/TopicModelling_Results9_DownloadAll.JPG)
+
+The results will be downloaded as a zip file. Please uncompress the file.
+
+In the Excel file, there are 4 tabs: 
+
+* Topic Constitution
+* Top Words
+* Topic Similarity (or Topic Correlation)
+* Topic Details
+
+In the **Topic Constitution** tab, you will see the following:
+
+* Column A: document ID
+* Column B: original text of the document
+* Column C: text after preprocessing the original text
+* Column D onwards: topic constitution scores by topic 
+
+For each document, the topic constitution scores correspond to the values seen in the documents list (in the topic view). 
+
+In the **Top Words** tab, you will see the following:
+
+* Column A: topic number
+* Column B: rank of the word in the corresponding topic
+* Column C: the processed word
+* Column D: word probability (%) of the word in the topic 
+
+The word probabilities correspond to the values displayed in the _Top Words in Topic by Word Probability_ chart (in the topic view).
+
+![Topic_Modelling_Results10](/img/TopicModelling_Results10_downloadexcel1.png)
+
+In the **Topic Similarity** tab (or **Topic Correlation** tab), you will find the similarity (or correlation) matrix. 
+
+
+The more positive the score is, the more similar/correlated the topics are. 
+
+In the **Topic Details** tab, you will find the coherence score of each topic and the size of the topic.
+
+![Topic_Modelling_Results11](/img/TopicModelling_results11_downloadexcel2.JPG)        |  ![Topic_Modelling_Results12](/img/TopicModelling_results12_downloadexcel3.JPG)
+:-------------------------:|:-------------------------:
+Topic Similarity Tab |  Topic Details Tab",466
+FAQ,1,"1. Which are the Topic Modelling algorithms used by GovText? Why did you use them? 
+
+
+GovText provides two options for Topic Modelling using the following algorithms: 
+* Latent Dirichlet Allocation (LDA)
+* Correlated Topic Model (CTM)
+
+We chose Latent Dirichlet Allocation (LDA) because it is the most commonly used Topic Modelling technique across various domains. It is a statistical, unsupervised machine learning model for discovering abstract topics which occur in a collection of documents. However, its limitation is the inability to model topic correlation.
+
+Therefore, we also added the Correlated Topic Model (CTM) algorithm so that users who want to see the correlation between topic models can do so. As compared to LDA, CTM uses a more flexible distribution for the topic proportions which allows for covariance structure. Even though it can give a more realistic model of the latent topic structure, it is much slower as compared to LDA.",155
+FAQ,2,"3. Does GovText use Bag-of-Words or Term Frequency - Inverse Document Frequency (TF-IDF) for the term weights?
+GovText uses the Bag-of-Words technique for Topic Modelling, as per the original algorithm. 
+
+In the introduction of this LDA paper, it states that TF-IDF provided “a relatively small amount of reduction in description length and reveals little in the way of inter- or intra- document statistical structure”. Hence, while TF-IDF can be used, it does not provide a significant advantage over the Bag-of-Words model. 
+",155
+FAQ,3,"5. How are the top 3 models selected? 
+After the trial models have been trained, we select the best models based on the coherence score, which has been shown to have the strongest correlation with human ratings of topic models.
+
+Instead of simply selecting the models with the maximum coherence scores, we used the formula ** abs|coherence score – 0.6|** to favour models which have coherence scores falling within the range of 0.4 to 0.8.
+
+This is because a model with a coherence score lower than 0.4 is likely to have broad, general topics, while one with coherence score higher than 0.8 is likely to have topics which are too specific. It is difficult for users to interpret from the topic models what their dataset is about in both scenarios.
+",155
+FAQ,4,"1. Can GovText automatically extract only the content from emails for analysis? 
+The current version of GovText does not do any specific preprocessing for emails. This means that, given an email or an email thread, the whole email, together with the headers, closing phrases and confidentiality clauses will be included for analysis.
+
+While some of the default preprocessing steps may be helpful (removal of stopwords and dropping of tokens that look like email addresses), the automatic extraction of the content from the email is not currently supported.
+",155
+FAQ,5,"2. How does GovText handle spelling mistakes and SG specific terms / abbreviations (MOH, otw etc.)? 
+GovText does not use a fixed vocabulary list. Therefore, words outside the English vocabulary (including Singlish words), and spelling mistakes are still treated as valid words for the Topic Models. In fact, if these words are important to a topic, they will appear in the topics and users will see them in the visualizations.
+",155
+FAQ,6,"Does GovText use lemmatization or stemming for word normalization?
+GovText uses lemmatization for word normalization, instead of stemming.
+
+The main reason behind this is to ensure that the (root) words making up the topics are valid English words, so that users can easily interpret them.
+
+Lemmatization is part of the default preprocessing steps for topic modelling. 
+
+Only English words will be lemmatized because GovText uses an English lemmatizer. Spelling mistakes will not be lemmatized. For example, the word “happiness” will be reduced to happy, but “hapy” will remain the same.
+",155
+FAQ,7,"4. What are the pre-processing steps performed by GovText under Topic Modelling?
+The default pre-processing steps performed before topic modelling include the following:
+* Sentence segmentation
+* Part-of-speech (POS) tagging and tokenization
+* Removal of stopwords
+* Lemmatization
+* Formation of n-grams",155
+FAQ,8,"5. Are numbers dropped?
+Numbers in both numerical (e.g. 1, 2, 3, 4, 5) and word (e.g. one, two, three, four, five) forms are dropped.
+",155
+FAQ,9,"6. How does GovText handle spaces and punctuations?
+Spaces and punctuations are removed as part of the default preprocessing steps on GovText. 
+",155
+FAQ,10,"7. How did you create the default stopwords list? 
+The default stopwords on GovText is built on Spacy’s stopword list, made up of words in the English language which usually does not add additional information to the sentence.
+
+We expanded this list by adding Singlish stopwords like lah, leh, hor etc. The full list is shown to users in the stopwords page
+
+<img src={useBaseUrl('/img/Stopwords_default.jpg')}/>",155
+FAQ,11,"8. Does GovText include N-grams and Part-of-speech (POS) tagging? Will users be allowed to opt-out or customize these steps?
+N-grams (bigrams and trigrams) and POS-tagging are part of the default preprocessing steps for Topic Modelling.
+
+Users can see the n-grams in the output if they are important keywords in a topic. In addition, after POS-tagging is done, only adjectives, adverbs, nouns, proper nouns and verbs are used as input into the topic model.
+
+Users do not have the option to exclude or alter these steps. ",155
+FAQ,12,"1. What’s the abstractive summarisation model used by GovText?
+GovText uses a Bidirectional and Auto Regressive Transformers (BART) model to do  abstractive summarisation. More information can be found at: https://ai.facebook.com/research/publications/bart-denoising-sequence-to-sequence-pre-training-for-natural-language-generation-translation-and-comprehension/ 
+",155
+FAQ,13,"2. How does GovText overcome the maximum token count limit set by the transformers-based abstractive summarisation model?
+For documents with lengths greater than the model limits, extractive summarisation is first done to reduce the lengths of the original documents by selecting only the most important sentences. Abstractive summarisation is then done on this extractive-summarised document. 
+",155
+FAQ,14,"3. What’s the maximum document length that could be summarised by GovText?
+There isn’t an explicit word limit for summarisation and the team has tested GovText able to process documents up to 50k words. 
+ 
+Please note that EXCEL file limits the total number of characters that a cell can contain to be 32,767 characters. However, if you know how to create a CSV file using a text editor, you can put in texts with much longer lengths (remember to save it in .csv format and upload it to GovText).
+ 
+Here is an example of how to do so https://help.smallbusiness.yahoo.net/s/article/SLN18690 but you will need to take care of line breaks and escape characters like “ in your document.
+",155
+overview,intro,"GovText is a comprehensive Natural Language Processing (NLP)-based text analytics platform with an intuitive user interface. Developed by GovTech’s Data Science and Artificial Intelligence Division (DSAID), the platform aims to help public officers analyse their textual data efficiently.
+
+GovText uses NLP techniques to automatically analyse unstructured text data and produce results that can help users better understand the contents. GovText is designed to be dataset-centric, and the same dataset can be used for multiple analyses. Users just need to upload their datasets first, before using GovText for analysis.
+
+GovText is offered as a web portal tool and as a model-hosting platform.
+
+The GovText Web Portal service was first launched for public officers in May 2021. Hosted on the Government on Commercial Cloud (GCC), the GovText Web Portal service currently has two text analytics tools that public officers can use:
+
+Topic Modelling, and
+Summarisation",184
+overview,future,"Besides providing text analytics tools in the web portal, GovText also serves as a model-hosting platform that also provides text analytics services via APIs for government agencies
+
+The GovText Model-hosting Platform currently focuses on Quality Service Management (QSM)-related use cases, but it can be extended to other areas too. The GovText API services used by client systems, such as Customer Relationship Management (CRM) systems, help to reduce manual work and improve QSM efficiency. The platform develops and hosts a variety of customised AI models for improving the efficiency and operation of customer service and feedback management.
+
+The GovText team is planning to expand the platform with new features, including more text analytics tools in future.
+
+GovText is part of the Service layer of the Singapore Government Tech Stack.",156
+overview,key features,"Key Features
+The GovText Web Portal service currently offers the following features to analyse your textual data:
+
+Topic Modelling with interactive presentation of results
+Text Summarization
+The GovText Model-hosting Platform, supported by the GovText team, addresses agencies’ needs through collaboration on operational use cases and model adaptation. It offers the following features:
+
+Development, deployment, and hosting of customised AI models
+Prediction of use case results by customised AI models",91
+overview,use cases,"Use Cases
+GovText Web Portal
+
+Public officers can use Topic Modelling to process data from surveys or feedback forms in order to better understand the key topics and findings from such surveys and feedback forms. Summarisation can be used to shorten news articles to speed up reading.
+
+GovText Model-hosting Platform
+
+A flagship use case is the Municipal Services Office (MSO) Chatbot, where the text classifier – predicting the feedback case category and the responding agency – and the key information extractor that extracts key feedback case details, were built and hosted by GovText. More details of this use case can be found in this article.
+
+GovText users can look forward to new transcript editing and speaker diarisation functions soon.",144
+overview,pricing,"Pricing
+Currently, the GovText Web Portal service is free for public officers until further notice. In future, the service might be chargeable on a cost-recovery basis.
+
+The GovText Model-hosting Platform service is delivered collaboratively for public agencies and Government central products on a cost-recovery basis.",62
+overview,team,"GovText is the NLP team in the Artificial Intelligence Platforms team headed by Director Alvina Goh. 
+It is part of the Data Science and Artificial Intelligence Division (DSAID) of the Government Technology Agency of Singapore (GovTech).
+
+The product team members are:
+Amelia: Data Scientist
+Charlton: Software Engineer
+Han Jing: Product Manager
+Hung Siang: Software Engineer
+Li Lu: Data Scientist
+Ryan: DevOps Engineer
+Watson: Data Scientist
+Weiguang: Software Engineer
+Sulaiman: Software Engineer
+Shangru: Software Engineer",118
