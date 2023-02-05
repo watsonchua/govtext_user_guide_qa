@@ -147,12 +147,12 @@ def answer_query_with_context(
 
 def main():
     st.set_page_config(
-        layout="wide",
+        # layout="wide",
         page_title="GovText User Guide Query"
         )
     st.title("GovText User Guide Query")
     st.caption("Powered by Open AI's GPT-3")
-    st.info("Information taken from [GovText website](https://www.govtext.gov.sg/) and [GovText User Guide](https://www.govtext.gov.sg/docs/intro).")
+    st.info("Information taken from [GovText website](https://www.govtext.gov.sg/), [GovText User Guide](https://www.govtext.gov.sg/docs/intro), and this [blob](https://raw.githubusercontent.com/watsonchua/govtext_user_guide_qa/main/docs/govtext/team.txt) about the team members.")
 
 
     df = read_df() 
