@@ -14,7 +14,7 @@ openai_api_key = secrets['openai_api_key']
 
 COMPLETIONS_MODEL = "text-davinci-003"
 EMBEDDING_MODEL = "text-embedding-ada-002"
-MAX_SECTION_LEN = 1500
+MAX_SECTION_LEN = 1000
 SEPARATOR = "\n* "
 ENCODING = "cl100k_base"  # encoding for text-embedding-ada-002
 
