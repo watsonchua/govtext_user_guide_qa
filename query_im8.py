@@ -1,4 +1,4 @@
-from open_ai_embeddings import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.docstore.document import Document
 from prompts import STUFF_PROMPT, template
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
@@ -18,15 +18,21 @@ openai.api_key = openai_api_key
 openai.api_type = "azure"
 openai.api_base = "https://govtext-ds-experiment.openai.azure.com/"
 openai.api_version = "2022-12-01"
-azure_completion_engine = "text-davinci-003-pretrained"
+# azure_completion_engine = "text-davinci-003-pretrained"
 # azure_completion_engine = "gpt-35-turbo-0301-pretrained"
-azure_embedding_engine = "text-embedding-ada-002-pretrained"
+# azure_completion_engine = "gpt-35-turbo"
+azure_completion_engine = "text-davinci-003"
+azure_embedding_engine = "text-embedding-ada-002"
 
 MAX_OUTPUT_TOKENS = 500
 # embedding model
-oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key)
+oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key, chunk_size=1)
 chain = load_qa_with_sources_chain(OpenAI(temperature=0, openai_api_key=openai_api_key, engine=azure_completion_engine, max_tokens=MAX_OUTPUT_TOKENS), chain_type="stuff", prompt=STUFF_PROMPT)
 
+# from langchain.chat_models import AzureChatOpenAI
+# chat = AzureChatOpenAI(temperature=0, openai_api_key=openai_api_key, deployment_name="gpt-35-turbo", openai_api_base="https://govtext-ds-experiment.openai.azure.com/", openai_api_version="2023-03-15-preview") #TODO: enter openai_api_base using named parameter after langchain fix
+# print(chat)
+# chain = load_qa_with_sources_chain(llm=chat, chain_type="stuff", prompt=STUFF_PROMPT)
 
 def max_tokens_for_context(question, model="text-davinci-003", max_output_tokens=500):
     encoding = tiktoken.encoding_for_model(model)

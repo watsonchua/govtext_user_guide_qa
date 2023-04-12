@@ -3,7 +3,7 @@ import toml
 import openai
 from prompts import STUFF_PROMPT
 from langchain.vectorstores.faiss import FAISS
-from open_ai_embeddings import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 from typing import Dict, Any, List
 import os
 from styling.custom_streamlit_components import format_page_layout
@@ -36,8 +36,8 @@ openai.api_key = openai_api_key
 openai.api_type = "azure"
 openai.api_base = "https://govtext-ds-experiment.openai.azure.com/"
 openai.api_version = "2022-12-01"
-azure_embedding_engine = "text-embedding-ada-002-pretrained"
-oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key)
+azure_embedding_engine = "text-embedding-ada-002"
+oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key, chunk_size=1)
 
 session = boto3.session.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name='ap-southeast-1')
 s3_client = session.client('s3')
@@ -99,11 +99,9 @@ def main():
 
     sample_questions = [
         "",
-        "Who is in the GovText team?",
         "What is the difference between CTM and LDA?",
         "How to upload dataset for topic modelling?",
         "Which summarization methods does GovText have?",        
-        "Are there topic modelling algorithms other than LDA and CTM in GovText?",
         "What data classification can GovText hold?",
         "Who do I contact if I cannot access the website?"
     ]

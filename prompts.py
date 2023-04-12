@@ -56,7 +56,7 @@ STUFF_PROMPT = PromptTemplate(
 azure_template = """<|im_start|>system
 You are an question answering assistant. Your job is to answer questions given a context and give the sources of information.
 Given the following extracted parts of a long document and a question, create a final answer with references ("SOURCES").
-If you don't know the answer, say "I don't know. Please direct the question to ITSM." Don't try to make up an answer.
+If you don't know the answer, say "I do not know." Don't try to make up an answer.
 ALWAYS return a "SOURCES" part in your answer. If you don't know the answer, leave "SOURCES" empty.
 DO NOT modify the SOURCE information from the extracts.
 <|im_end|>
@@ -91,16 +91,6 @@ FINAL ANSWER: "Watson lives in Jurong West, Singapore."
 SOURCES: C00001, C00002
 <|im_end|>
 <|im_start|>user
-QUESTION: What did the president say about Michael Jackson?
-=========
-Content: Madam Speaker, Madam Vice President, our First Lady and Second Gentleman. Members of Congress and the Cabinet. Justices of the Supreme Court. My fellow Americans.  \n\nLast year COVID-19 kept us apart. This year we are finally together again. \n\nTonight, we meet as Democrats Republicans and Independents. But most importantly as Americans. \n\nWith a duty to one another to the American people to the Constitution. \n\nAnd with an unwavering resolve that freedom will always triumph over tyranny.
-Source: F00010
-<|im_end|>
-<|im_start|>assistant
-FINAL ANSWER: "I don't know." 
-SOURCES:
-<|im_end|>
-<|im_start|>user
 QUESTION: {question}
 =========
 {summaries}
@@ -118,6 +108,19 @@ FINAL ANSWER:
 # SOURCE: F00010
 # FINAL ANSWER: The president did not mention Michael Jackson.
 # SOURCES:
+
+
+
+# <|im_start|>user
+# QUESTION: What did the president say about Michael Jackson?
+# =========
+# Content: Madam Speaker, Madam Vice President, our First Lady and Second Gentleman. Members of Congress and the Cabinet. Justices of the Supreme Court. My fellow Americans.  \n\nLast year COVID-19 kept us apart. This year we are finally together again. \n\nTonight, we meet as Democrats Republicans and Independents. But most importantly as Americans. \n\nWith a duty to one another to the American people to the Constitution. \n\nAnd with an unwavering resolve that freedom will always triumph over tyranny.
+# Source: F00010
+# <|im_end|>
+# <|im_start|>assistant
+# FINAL ANSWER: "I don't know." 
+# SOURCES:
+# <|im_end|>
 
 AZURE_STUFF_PROMPT = PromptTemplate(
     template=azure_template, input_variables=["summaries", "question"]

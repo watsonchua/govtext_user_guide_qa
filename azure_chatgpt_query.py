@@ -3,7 +3,7 @@ import openai
 from prompts import AZURE_STUFF_PROMPT
 
 class AzureChatGPT:
-    def __init__(self, engine_name="gpt-35-turbo-0301-pretrained", **params):
+    def __init__(self, engine_name="gpt-35-turbo", **params):
         self.engine_name = engine_name
         self.temperature=params.get('temperature', 0)
         self.max_tokens=params.get('max_tokens', 800)
@@ -68,9 +68,9 @@ class AzureChatGPT:
         )
         
         
-        print(qa_prompt)
-        print('\n\n')
-        print(response)
+        # print(qa_prompt)
+        # print('\n\n')
+        # print(response)
         
 #         print(self.temperature)
 #         print(self.top_p)
