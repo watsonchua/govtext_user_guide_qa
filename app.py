@@ -1,193 +1,201 @@
 import streamlit as st
 import toml
 import openai
-import pickle
-import numpy as np
-import tiktoken
-import pandas as pd
+from prompts import STUFF_PROMPT
+from langchain.vectorstores.faiss import FAISS
+from open_ai_embeddings import OpenAIEmbeddings
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+from typing import Dict, Any, List
+import os
+from styling.custom_streamlit_components import format_page_layout, disclaimer_banner
+from query_im8 import get_sources, enquire, enquire_multiple, format_source, format_content
+import json
+import datetime
+import boto3
+from time import perf_counter
+# import argparse
+import shutil
+# openai.api_key = os.environ["OPENAI_API_KEY"]
+from streamlit.runtime.scriptrunner.script_run_context import get_script_run_ctx
+
+script_run_ctx = get_script_run_ctx()
+session_id = script_run_ctx.session_id if script_run_ctx else ''
+st.session_state['session_id'] = session_id
+# place holder for logging user info
+# st.session_state['user'] = 'user'
+
 
 
 secrets = toml.load('.streamlit/secrets.toml')
 
-openai_api_key = secrets['openai_api_key']
+openai_api_key = secrets['openai_api_key_azure']
+aws_access_key_id = secrets['aws_access_key_id']
+aws_secret_access_key = secrets['aws_secret_access_key']
 
+openai.api_key = openai_api_key
 
-COMPLETIONS_MODEL = "text-davinci-003"
-EMBEDDING_MODEL = "text-embedding-ada-002"
-MAX_SECTION_LEN = 1000
-SEPARATOR = "\n* "
-ENCODING = "cl100k_base"  # encoding for text-embedding-ada-002
+openai.api_type = "azure"
+openai.api_base = "https://govtext-ds-experiment.openai.azure.com/"
+openai.api_version = "2022-12-01"
+azure_embedding_engine = "text-embedding-ada-002-pretrained"
+oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key)
 
-encoding = tiktoken.get_encoding(ENCODING)
-separator_len = len(encoding.encode(SEPARATOR))
+session = boto3.session.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name='ap-southeast-1')
+s3_client = session.client('s3')
 
-openai.api_key=openai_api_key
-
-
-COMPLETIONS_API_PARAMS = {
-    # We use temperature of 0.0 because it gives the most predictable, factual answer.
-    "temperature": 0.0,
-    "max_tokens": 300,
-    "model": COMPLETIONS_MODEL,
-}
-
-# f"Context separator contains {separator_len} tokens"
-
-@st.cache
-def read_df():
-    df = pd.read_csv('./docs/govtext/govtext_content.csv')
-    df = df.set_index(["section", "subsection"])
-
-    return df
-
-@st.cache(allow_output_mutation=True)
-def read_embeddings():
-    with open('./docs/govtext/govtext_content_embeddings.pkl', 'rb') as f:
-        embeddings = pickle.load(f)
-
-    return embeddings
-
-def get_embedding(text: str, model: str=EMBEDDING_MODEL):
-    result = openai.Embedding.create(
-      model=model,
-      input=text
-    )
-    return result["data"][0]["embedding"], result["usage"]["prompt_tokens"]
-
-# def load_embeddings(fname: str):
-#     with open(fname, 'rb') as f:
-#         embeddings = pickle.load(f)
+@st.cache_data
+def read_db():
+    start = perf_counter()
     
-#     return embeddings
-
-
-def vector_similarity(x, y):
-    """
-    Returns the similarity between two vectors.
+    bucket_prefix = 'govtext_user_guide_docs'
     
-    Because OpenAI Embeddings are normalized to length 1, the cosine similarity is the same as the dot product.
-    """
-    return np.dot(np.array(x), np.array(y))
-
-# contexts: dict[(str, str), np.array])
-# returns list[(float, (str, str))]
-def order_document_sections_by_query_similarity(query: str, contexts):
-    """
-    Find the query embedding for the supplied query, and compare it against all of the pre-calculated document embeddings
-    to find the most relevant sections. 
-    
-    Return the list of document sections, sorted by relevance in descending order.
-    """
-    query_embedding, _ = get_embedding(query)
-    
-    document_similarities = sorted([
-        (vector_similarity(query_embedding, doc_embedding), doc_index) for doc_index, doc_embedding in contexts.items()
-    ], reverse=True)
-    
-    return document_similarities
-
-
-def construct_prompt(question: str, context_embeddings: dict, df: pd.DataFrame) -> str:
-    """
-    Fetch relevant 
-    """
-    most_relevant_document_sections = order_document_sections_by_query_similarity(question, context_embeddings)
-    
-    chosen_sections = []
-    chosen_sections_len = 0
-    chosen_sections_indexes = []
-     
-    for _, section_index in most_relevant_document_sections:
-        # Add contexts until we run out of space.        
-        document_section = df.loc[section_index]
+    target_dir = './' + bucket_prefix
         
-        chosen_sections_len += document_section.tokens + separator_len
-        if chosen_sections_len > MAX_SECTION_LEN:
-            break
-            
-        chosen_sections.append(SEPARATOR + document_section.content.replace("\n", " "))
-        chosen_sections_indexes.append(str(section_index))
-            
-    # Useful diagnostic information
-    print(f"Selected {len(chosen_sections)} document sections:")
-    print("\n".join(chosen_sections_indexes))
+    if os.path.exists(target_dir):
+        shutil.rmtree(target_dir)
+    os.makedirs(target_dir)
     
-    header = """Answer the question as truthfully as possible using the provided context, and if the answer is not contained within the text below, say "I don't know."\n\nContext:\n"""
-    
-    return header + "".join(chosen_sections) + "\n\n Q: " + question + "\n A:"
+    with open(target_dir + '/index.faiss', 'wb') as f:
+        s3_client.download_fileobj('govtext-qa-index-db', bucket_prefix + '/index.faiss', f)
+    with open(target_dir + '/index.pkl', 'wb') as f:
+        s3_client.download_fileobj('govtext-qa-index-db', bucket_prefix + '/index.pkl', f)
+        
+    db_clauses = FAISS.load_local(target_dir, oai_embedder)
+        
+    end = perf_counter()
+    print('FAISS index downloaded in ', str(end-start), ' seconds')
+    return db_clauses
 
 
 
-def answer_query_with_context(
-    query: str,
-    df: pd.DataFrame,
-    document_embeddings,
-    show_prompt: bool = True
-) -> str:
-    prompt = construct_prompt(
-        query,
-        document_embeddings,
-        df
+def log_query(feedback=None):
+    if feedback is None:
+        log_dict = {'feedback': feedback, **st.session_state}
+        prefix = 'all'
+    else:
+        prefix = feedback
+        log_dict = {
+            'feedback': feedback,
+            'feedback_text': st.session_state['feedback_text'],
+            'answer_id': st.session_state['answer_id'],
+            'question': st.session_state['question'],
+            'answer': st.session_state['answer'],
+            'user': st.session_state['user']    
+
+        }
+            
+    content = json.dumps(log_dict)
+    response = s3_client.put_object( 
+        Bucket='govtext-user-guide-qa-feedback-data',
+        Body=content,
+        Key= prefix + '/' + st.session_state['answer_id'] + '.json'
     )
 
-    print(df.head())
-    print(query)
-
-    
-    if show_prompt:
-        print(prompt)
-
-    response = openai.Completion.create(
-                prompt=prompt,
-                **COMPLETIONS_API_PARAMS
-            )
-
-    return response["choices"][0]["text"].strip(" \n")
 
 
 def main():
-    st.set_page_config(
-        # layout="wide",
-        page_title="GovText User Guide Query"
-        )
-    st.title("GovText User Guide Query")
-    st.caption("Powered by Open AI's GPT-3")
-    st.info("Information taken from [GovText website](https://www.govtext.gov.sg/), [GovText User Guide](https://www.govtext.gov.sg/docs/intro), and this [blob](https://raw.githubusercontent.com/watsonchua/govtext_user_guide_qa/main/docs/govtext/team.txt) about the team members.")
-
-
-    df = read_df() 
-    document_embeddings = read_embeddings()
+    format_page_layout(page_title="GovText User Guide Question Answering", layout="wide")
+        
+    db = read_db()
 
     sample_questions = [
         "",
-        "who is the boss?",
-        "how many members are there in govtext?",
-        "what is the difference between ctm and lda?",
-        "how to upload dataset for topic modelling?",
-        "what does govtext do?",
-        "what are govtext's features?",
-        "who is han jing?",        
-    ]    
+        "Who is in the GovText team?",
+        "What is the difference between CTM and LDA?",
+        "How to upload dataset for topic modelling?",
+        "What are the summarization methods available?",
+        "Are there topic modelling algorithms other than LDA and CTM in GovText?",
+        "What data classification can GovText hold?",
+        "I cannot access the website. Who can I contact?"
+    ] 
+    
+    # st.warning('''
+    # This system is an **ALPHA** version.  
+    # While we strive to provide accurate and up-to-date information, there may be inaccuracies in the content due to ongoing development and technical limitations.  
+    # If you have feedback on the system, please submit it [here](https://form.gov.sg/640ffbdbaed11b0011f4b4bb).
+    # ''')
+    
+    center_container = st.container()
+    
+    center_container.title("GovText User Guide Question Answering")
+    # user_email = center_container.text_input(label='Email (ending with gov.sg)', value=st.session_state['user'] if 'user' in st.session_state else '', key='user')
+    
 
-    st.subheader("Question")
-    input_container = st.container()
-    select_box_question = input_container.selectbox("Examples", sample_questions, key='select_option')
-    # input_text = input_container.text_area("Enter Question", key='input_text')
+    center_container.subheader("Question")
+    
+    select_box_question = center_container.selectbox("Examples", sample_questions, key='select_option')
 
     if select_box_question.strip():
-        input_text = input_container.text_area("Enter Question (Type in your own!)", select_box_question, key='input_text')
+        input_text = center_container.text_area("Enter Question (Type in your own!)", select_box_question, key='input_text')
     else:
-        input_text = input_container.text_area("Enter Question (Type in your own!)", key='input_text')
+        input_text = center_container.text_area("Enter Question (Type in your own!)", key='input_text')
 
-    st.subheader("Answer")
-    output_container = st.container()
+    results_container = center_container.empty()
+    
+        
+    qa_col, _, sources_col = results_container.columns((8,1,8))
+    qa_col.subheader("Answer")
+    sources_col.subheader("Sources")
 
+    placeholder = qa_col.empty()
+    
+    
+    if input_text.strip():                                                 
+        with placeholder:
+            with st.spinner('Getting Answers.....'):
+                query = input_text
+                try:
+                    answer, source_docs, selected_docs, top_docs = enquire(query, db, k=6)
+                except Exception as e:
+                    raise
 
-    if input_text.strip():
-        with st.spinner():
-            answer = answer_query_with_context(input_text, df, document_embeddings, show_prompt=True)
-            output_container.write(answer)
+                qa_col.write(answer.strip())
 
+                # sources_col.markdown('**_IM8 Clauses:_**')
 
+                for sd in source_docs:
+                    with sources_col.expander(format_source(sd.metadata)):
+                        st.write(format_content(sd.page_content))
+
+                st.session_state['answer'] = answer
+                st.session_state['question'] = input_text
+                st.session_state['source_docs'] = [vars(sd) for sd in source_docs]
+                st.session_state['selected_docs'] = [vars(sed) for sed in selected_docs]
+                st.session_state['top_docs'] = [vars(td) for td in top_docs]
+
+                cur_datetime = datetime.datetime.now()
+                formatted_datetime  = cur_datetime.strftime("%Y%m%d%H%M%S%f")
+                st.session_state['answer_generated_timestamp'] = formatted_datetime
+
+                answer_id = st.session_state['session_id'] + '/' + formatted_datetime
+                st.session_state['answer_id'] = answer_id
+
+                # if index_type != 'faq':
+                #     log_query(feedback=None)
+
+                #     feedback_placeholder = qa_col.empty()
+
+                #     with feedback_placeholder.form(key='feedback_form'):
+                #         feedback_rating = st.radio(label='Optional: Rate this answer!', options=['👍', '👎'], horizontal=True, key='feedback_rating')
+                #         feedback_text = st.text_area(label='Give your reason and the correct answer (if applicable).', key='feedback_text')                        
+                #         submit_form = st.form_submit_button(label='Submit', on_click=log_and_reset)
+                        
+
+# def log_and_reset():
+#     if st.session_state['feedback_rating']=='👍':
+#         log_query(feedback='good')
+#     else: 
+#         log_query(feedback='bad')
+    
+#     st.session_state['select_option'] = ""
+#     st.session_state['input_text'] = ""
+    
+#     print(st.session_state['feedback_rating'])
+#     print(st.session_state['feedback_text'])
+
+    
+
+    
 if __name__ == "__main__":
     main()
+
