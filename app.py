@@ -4,11 +4,10 @@ import openai
 from prompts import STUFF_PROMPT
 from langchain.vectorstores.faiss import FAISS
 from open_ai_embeddings import OpenAIEmbeddings
-from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from typing import Dict, Any, List
 import os
-from styling.custom_streamlit_components import format_page_layout, disclaimer_banner
-from query_im8 import get_sources, enquire, enquire_multiple, format_source, format_content
+from styling.custom_streamlit_components import format_page_layout
+from query_im8 import enquire, format_source, format_content
 import json
 import datetime
 import boto3
@@ -103,11 +102,11 @@ def main():
         "Who is in the GovText team?",
         "What is the difference between CTM and LDA?",
         "How to upload dataset for topic modelling?",
-        "What are the summarization methods available?",
+        "Which summarization methods does GovText have?",        
         "Are there topic modelling algorithms other than LDA and CTM in GovText?",
         "What data classification can GovText hold?",
-        "I cannot access the website. Who can I contact?"
-    ] 
+        "Who do I contact if I cannot access the website?"
+    ]
     
     # st.warning('''
     # This system is an **ALPHA** version.  

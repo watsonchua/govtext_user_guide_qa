@@ -5,7 +5,7 @@ template = """Create a final answer to the given questions using the provided do
 
 ---------
 
-QUESTION: What  is the purpose of ARPA-H?
+QUESTION: What is the purpose of ARPA-H?
 =========
 Content: More support for patients and families. \n\nTo get there, I call on Congress to fund ARPA-H, the Advanced Research Projects Agency for Health. \n\nIt’s based on DARPA—the Defense Department project that led to the Internet, GPS, and so much more.  \n\nARPA-H will have a singular purpose—to drive breakthroughs in cancer, Alzheimer’s, diabetes, and more.
 Source: 1-32
@@ -19,6 +19,20 @@ SOURCES: 1-32
 
 ---------
 
+QUESTION: Where does Watson live?
+=========
+Content: Watson was born in Singapore in 1983.
+Source: C00001
+Content: Watson is living together with his parents in a flat in Jurong West.
+Source: C00002
+Content: Watson works in GovTech as a data scientist.
+Source: C00003
+=========
+FINAL ANSWER: "Watson lives in Jurong West, Singapore." 
+SOURCES: C00001, C00002
+
+---------
+
 QUESTION: {question}
 =========
 {summaries}
@@ -29,7 +43,15 @@ STUFF_PROMPT = PromptTemplate(
     template=template, input_variables=["summaries", "question"]
 )
 
+# ---------
 
+# QUESTION: What did the president say about Michael Jackson?
+# =========
+# Content: Madam Speaker, Madam Vice President, our First Lady and Second Gentleman. Members of Congress and the Cabinet. Justices of the Supreme Court. My fellow Americans.  \n\nLast year COVID-19 kept us apart. This year we are finally together again. \n\nTonight, we meet as Democrats Republicans and Independents. But most importantly as Americans. \n\nWith a duty to one another to the American people to the Constitution. \n\nAnd with an unwavering resolve that freedom will always triumph over tyranny.
+# Source: F00010
+# =========
+# FINAL ANSWER: "I don't know." 
+# SOURCES:
 
 azure_template = """<|im_start|>system
 You are an question answering assistant. Your job is to answer questions given a context and give the sources of information.
