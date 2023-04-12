@@ -3,3 +3,7 @@ pandas
 numpy
 tiktoken
 toml
+langchain
+faiss-cpu
+boto3
+validators
