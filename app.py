@@ -1,43 +1,31 @@
 import streamlit as st
 import toml
-import openai
-from prompts import STUFF_PROMPT
-from langchain.vectorstores.faiss import FAISS
-from langchain.embeddings.openai import OpenAIEmbeddings
-from typing import Dict, Any, List
 import os
-from styling.custom_streamlit_components import format_page_layout
-from query_im8 import enquire, format_source, format_content
 import json
 import datetime
 import boto3
-from time import perf_counter
-# import argparse
 import shutil
-# openai.api_key = os.environ["OPENAI_API_KEY"]
+from time import perf_counter
+from query import QueryEngine, format_content, format_source
 from streamlit.runtime.scriptrunner.script_run_context import get_script_run_ctx
+
+from styling.custom_streamlit_components import format_page_layout
 
 script_run_ctx = get_script_run_ctx()
 session_id = script_run_ctx.session_id if script_run_ctx else ''
 st.session_state['session_id'] = session_id
+
 # place holder for logging user info
 # st.session_state['user'] = 'user'
 
 
 
 secrets = toml.load('.streamlit/secrets.toml')
+config = toml.load('./config.toml')
 
-openai_api_key = secrets['openai_api_key_azure']
+
 aws_access_key_id = secrets['aws_access_key_id']
 aws_secret_access_key = secrets['aws_secret_access_key']
-
-openai.api_key = openai_api_key
-
-openai.api_type = "azure"
-openai.api_base = "https://govtext-ds-experiment.openai.azure.com/"
-openai.api_version = "2022-12-01"
-azure_embedding_engine = "text-embedding-ada-002"
-oai_embedder = OpenAIEmbeddings(query_model_name=azure_embedding_engine, document_model_name=azure_embedding_engine, openai_api_key=openai_api_key, chunk_size=1)
 
 session = boto3.session.Session(aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name='ap-southeast-1')
 s3_client = session.client('s3')
@@ -46,7 +34,8 @@ s3_client = session.client('s3')
 def read_db():
     start = perf_counter()
     
-    bucket_prefix = 'govtext_user_guide_docs'
+    bucket_name = config['db_bucket_name']
+    bucket_prefix = config['db_bucket_prefix']
     
     target_dir = './' + bucket_prefix
         
@@ -55,15 +44,16 @@ def read_db():
     os.makedirs(target_dir)
     
     with open(target_dir + '/index.faiss', 'wb') as f:
-        s3_client.download_fileobj('govtext-qa-index-db', bucket_prefix + '/index.faiss', f)
+        s3_client.download_fileobj(bucket_name, bucket_prefix + '/index.faiss', f)
     with open(target_dir + '/index.pkl', 'wb') as f:
-        s3_client.download_fileobj('govtext-qa-index-db', bucket_prefix + '/index.pkl', f)
-        
-    db_clauses = FAISS.load_local(target_dir, oai_embedder)
-        
+        s3_client.download_fileobj(bucket_name, bucket_prefix + '/index.pkl', f)
+
     end = perf_counter()
     print('FAISS index downloaded in ', str(end-start), ' seconds')
-    return db_clauses
+    
+    qe = QueryEngine()
+        
+    return qe
 
 
 
@@ -85,7 +75,7 @@ def log_query(feedback=None):
             
     content = json.dumps(log_dict)
     response = s3_client.put_object( 
-        Bucket='govtext-user-guide-qa-feedback-data',
+        Bucket=config['feedback_bucket_name'],
         Body=content,
         Key= prefix + '/' + st.session_state['answer_id'] + '.json'
     )
@@ -95,7 +85,7 @@ def log_query(feedback=None):
 def main():
     format_page_layout(page_title="GovText User Guide Question Answering", layout="wide")
         
-    db = read_db()
+    qe = read_db()
 
     sample_questions = [
         "",
@@ -142,7 +132,7 @@ def main():
             with st.spinner('Getting Answers.....'):
                 query = input_text
                 try:
-                    answer, source_docs, selected_docs, top_docs = enquire(query, db, k=6)
+                    answer, source_docs, top_docs = qe.enquire(query)
                 except Exception as e:
                     raise
 
@@ -157,7 +147,7 @@ def main():
                 st.session_state['answer'] = answer
                 st.session_state['question'] = input_text
                 st.session_state['source_docs'] = [vars(sd) for sd in source_docs]
-                st.session_state['selected_docs'] = [vars(sed) for sed in selected_docs]
+                st.session_state['selected_docs'] = []
                 st.session_state['top_docs'] = [vars(td) for td in top_docs]
 
                 cur_datetime = datetime.datetime.now()
