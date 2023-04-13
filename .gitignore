@@ -1,5 +1,6 @@
-.streamlit/
+.streamlit/secrets.toml
 .ipynb_checkpoints/
 *.pyc
-docs/govtext/md/
-docs/govtext/raw_text
+docs/**
+govtext_user_guide_docs/
+*pycache*

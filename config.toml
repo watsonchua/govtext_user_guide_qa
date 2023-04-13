@@ -1,0 +1,20 @@
+openai_api_type = "azure"
+openai_api_base = "https://govtext-ds-experiment.openai.azure.com/"
+openai_api_version = "2023-03-15-preview"
+completion_engine = "text-davinci-003"
+embedding_engine = "text-embedding-ada-002"
+max_output_tokens = 500
+temperature = 0
+top_p = 1
+frequency_penalty = 0
+presence_penalty = 0
+n = 1
+best_of = 1
+# chain_type = "map_reduce"
+# db_top_k = 10
+chain_type = "stuff"
+db_top_k = 4
+db_bucket_name = "govtext-qa-index-db"
+feedback_bucket_name = "govtext-user-guide-qa-feedback-data"
+db_bucket_prefix = "govtext_user_guide_docs"
+
